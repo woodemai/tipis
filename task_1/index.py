@@ -10,7 +10,7 @@ frequencies = [1, 2, 4, 8]
 def generate_sine_signals(frequencies, amplitude, time, initial_phase):
     signals = []
     for freq in frequencies:
-        omega = 2 * np.pi * freq  # Угловая частота
+        omega = 2 * np.pi * freq  # Angular frequency
         phase = omega * time + initial_phase
         signal = amplitude * np.cos(phase)
         signals.append(signal)
@@ -29,7 +29,7 @@ def calculate_spectrum(signals):
     return [np.abs(np.fft.fft(signal)) for signal in signals]
 
 
-# Генерация сигналов
+# Signal generation
 sine_signals = generate_sine_signals(frequencies, amplitude, time, initial_phase)
 square_signals = generate_square_signals(time, frequencies, amplitude)
 frequencies_for_fft = np.fft.fftfreq(len(time), d=0.001)
@@ -45,26 +45,26 @@ def configure_subplot(ax, x_data, y_data, title, xlabel, ylabel, color, xlim=Non
 
 
 def plot_signals_and_spectra():
-    """Отображает графики сигналов и их спектров."""
+    """Displays plots of signals and their spectra."""
     fig, axs = plt.subplots(4, 4, figsize=(15, 10))
 
-    # Для каждого сигнала (гармонического и цифрового)
+    # For each signal (harmonic and digital)
     for i, freq in enumerate(frequencies):
-        # Гармонический сигнал
+        # Harmonic signal
         configure_subplot(axs[i, 0], time, sine_signals[i],
-                          f'Гармонический сигнал {freq} Гц', 'Время [с]', 'Амплитуда', 'red')
+                          f'Harmonic Signal {freq} Hz', 'Time [s]', 'Amplitude', 'red')
 
-        # Цифровой сигнал
+        # Digital signal
         configure_subplot(axs[i, 1], time, square_signals[i],
-                          f'Цифровой сигнал {freq} Гц', 'Время [с]', 'Амплитуда', 'b')
+                          f'Digital Signal {freq} Hz', 'Time [s]', 'Amplitude', 'b')
 
-        # Спектр гармонического сигнала
+        # Spectrum of harmonic signal
         configure_subplot(axs[i, 2], frequencies_for_fft, calculate_spectrum(sine_signals)[i],
-                          f'Гармонический спектр {freq} Гц', 'Частота [Гц]', 'Амплитуда', 'red', xlim=(0, 50))
+                          f'Harmonic Spectrum {freq} Hz', 'Frequency [Hz]', 'Amplitude', 'red', xlim=(0, 50))
 
-        # Спектр цифрового сигнала
+        # Spectrum of digital signal
         configure_subplot(axs[i, 3], frequencies_for_fft, calculate_spectrum(square_signals)[i],
-                          f'Цифровой спектр {freq} Гц', 'Частота [Гц]', 'Амплитуда', 'b', xlim=(0, 50))
+                          f'Digital Spectrum {freq} Hz', 'Frequency [Hz]', 'Amplitude', 'b', xlim=(0, 50))
 
     plt.tight_layout()
     plt.show()
